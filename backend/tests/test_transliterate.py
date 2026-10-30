@@ -1,5 +1,6 @@
 import pytest
 
+from app.lexicon import normalize
 from app.transliterate import FRANCO_DIGITS, arabic_to_franco, franco_to_arabic
 
 
@@ -33,8 +34,15 @@ def test_hamza_words_come_from_dictionary(franco, arabic):
         ("ana 9", "انا 9"),
         ("en nas", "الناس"),
         ("bel 3arabeya", "بالعربية"),
-        ("lel bet", "للبت"),
+        ("lel bet", "للبيت"),
     ],
 )
 def test_letter_and_article_rules(franco, arabic):
     assert franco_to_arabic(franco) == arabic
+
+
+def test_lexicon_normalizes_spelling_variants():
+    assert normalize("حاجة") == "حاجه"
+    assert normalize("أنا") == "انا"
+    assert normalize("على") == "علي"
+    assert normalize("كُوَيِّس") == "كويس"
