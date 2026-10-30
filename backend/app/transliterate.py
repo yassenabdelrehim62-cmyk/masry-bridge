@@ -113,15 +113,6 @@ DICTIONARY = {
     "el7amdulela": "الحمدلله",
     "enharda": "النهارده",
     "ennaharda": "النهارده",
-    # Adverbs ending in tanween (-an written as ا)
-    "shokran": "شكرا",
-    "gedan": "جدا",
-    "tab3an": "طبعا",
-    "aslan": "اصلا",
-    "abadan": "ابدا",
-    "tamaman": "تماما",
-    "ahlan": "اهلا",
-    "3afwan": "عفوا",
     # 2 as hamza (ء) instead of the default ق
     "so2al": "سؤال",
     "mas2ala": "مسألة",
@@ -269,6 +260,12 @@ def _candidates(word: str) -> list[tuple[str, float]]:
         _vowel_options(units, i, word) if kind == "v" else _consonant_options(kind, text)
         for i, (kind, text) in enumerate(units)
     ]
+    if len(units) > 2 and units[-2:] == [("v", "a"), ("c", "n")]:
+        # Final "-an" can also be tanween, written ا: shokran -> شكرا.
+        options[-2:] = [
+            [(spelling + "ن", cost) for spelling, cost in options[-2]]
+            + [("ا", DEFAULT_RULE_COST)]
+        ]
     if math.prod(len(unit_options) for unit_options in options) > MAX_CANDIDATES:
         options = [unit_options[:1] for unit_options in options]
     return [

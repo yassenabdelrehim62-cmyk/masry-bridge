@@ -46,3 +46,16 @@ def test_lexicon_normalizes_spelling_variants():
     assert normalize("أنا") == "انا"
     assert normalize("على") == "علي"
     assert normalize("كُوَيِّس") == "كويس"
+
+
+@pytest.mark.parametrize(
+    ("franco", "arabic"),
+    [
+        ("shokran", "شكرا"),
+        ("tab3an", "طبعا"),
+        ("emte7an", "امتحان"),
+        ("kan", "كان"),
+    ],
+)
+def test_final_an_can_be_tanween(franco, arabic):
+    assert franco_to_arabic(franco) == arabic
