@@ -23,6 +23,7 @@ masry-bridge/
     │   └── transliterate.py  # core conversion logic (pure functions)
     └── tests/
         ├── examples.txt      # Franco | Arabic reference pairs, one per line
+        ├── test_examples.py  # one parametrized test per line of examples.txt
         └── test_transliterate.py
 ```
 
